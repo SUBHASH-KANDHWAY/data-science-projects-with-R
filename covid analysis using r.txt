@@ -1,0 +1,42 @@
+rm(list=ls())#remove all the variablw previoulsy in storage
+
+library(Hmisc)
+
+data<-datasets_494724_994000_COVID19_line_list_data <- read.csv("~/R/datasets_494724_994000_COVID19_line_list_data.csv")
+str(data)
+data$death_dummy<-as.integer(data$death !=0)
+
+#death Rate
+sum(data$death_dummy)/nrow(data)
+
+#age
+#claim: PEOPLE EHO DIE ARE OLDER
+
+dead=subset(data,death_dummy==1)
+alive=subset(data,death_dummy==0)
+
+mean(dead$age,na.rm=TRUE)
+mean(alive$age,na.rm=TRUE)
+
+#IS THIS STATISTICALLY CORRECT
+
+t.test(alive$age,dead$age,alternative="two.sided",conf.level = .95)
+
+#NORMALLY ID P<.05 ,WE REJECT NULL HYPOTHISIS AND CONCLUDE THAT THIS IS SIGNIFICANT .
+
+
+#GENDER 
+#claim: GENDER HAS NO EFFECT
+
+men=subset(data,gender=="male")
+women=subset(data,gender=="female")
+
+mean(men$death_dummy,na.rm=TRUE)
+mean(women$death_dummy,na.rm=TRUE)
+
+#IS THIS STATICTICS IS CORRECT
+
+t.test(men$death_dummy,women$death_dummy,alternative="two.sided",conf.level = .99)
+
+# MEN DIED MORE THAN WOMEN
+
